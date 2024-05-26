@@ -31,14 +31,14 @@ class Status(enum.Enum):
 
 group_tickets = db.Table(
     "group_tickets",
-    db.Column("group_id", Integer, ForeignKey("group.id")),
-    db.Column("ticket_id", Integer, ForeignKey("ticket.id"))
+    db.Column("group_id", Integer, ForeignKey("group.id", ondelete="CASCADE")),
+    db.Column("ticket_id", Integer, ForeignKey("ticket.id", ondelete="CASCADE"))
 )
 
 user_groups = db.Table(
     "user_groups",
-    db.Column("group_id", Integer, ForeignKey("group.id")),
-    db.Column("user_id", Integer, ForeignKey("user.id"))
+    db.Column("group_id", Integer, ForeignKey("group.id", ondelete="CASCADE")),
+    db.Column("user_id", Integer, ForeignKey("user.id", ondelete="CASCADE"))
 )
 
 
@@ -47,7 +47,13 @@ class Group(db.Model):
     name = Column(String(100), unique=True, nullable=False)
     description = Column(Text, nullable=True)
 
-    users = relationship("User", secondary="user_groups", backref="groups", lazy=True)
+    users = relationship(
+        "User",
+        secondary="user_groups",
+        backref="groups",
+        lazy=True,
+        passive_deletes=True
+    )
 
 
 class User(db.Model):
