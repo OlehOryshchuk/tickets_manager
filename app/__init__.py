@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 
 from app.config import Config
+from app import models
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -26,13 +27,17 @@ def init_app():
     with app.app_context():
         db.create_all()
 
-    from app.auth import auth
-    app.register_blueprint(auth)
-
-    from app.route import main
-    app.register_blueprint(main)
+    from app.routes import (
+        auth,
+        admin,
+        group,
+        ticket,
+        user
+    )
+    app.register_blueprint(auth.auth_bl)
+    app.register_blueprint(admin.admin_bl)
+    app.register_blueprint(group.group_bl)
+    app.register_blueprint(ticket.ticket_bl)
+    app.register_blueprint(user.user_bl)
 
     return app
-
-
-from app import models
