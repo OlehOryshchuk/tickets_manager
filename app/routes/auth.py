@@ -9,9 +9,9 @@ from flask import (
 from flask_login import login_user, logout_user
 
 from app.models import User
-from . import login_manager, db
+from app import login_manager, db
 
-auth = Blueprint("auth", __name__)
+auth_bl = Blueprint("auth", __name__)
 
 
 @login_manager.user_loader
@@ -19,7 +19,7 @@ def user_loader(user_id: str):
     return User.query.get(id=int(user_id))
 
 
-@auth.route("/register", methods=["GET", "POST"])
+@auth_bl.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
         username = request.form["username"]
@@ -38,7 +38,7 @@ def register():
     return render_template("auth/register.html")
 
 
-@auth.route("/login", methods=["GET", "POST"])
+@auth_bl.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         username = request.form["username"]
@@ -54,7 +54,7 @@ def login():
     return render_template("auth/login.html")
 
 
-@auth.post("/logout")
+@auth_bl.post("/logout")
 def logout():
     logout_user()
     return redirect(url_for("auth:logout"))
