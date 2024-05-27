@@ -7,9 +7,11 @@ from wtforms import (
     TextAreaField,
     SubmitField,
     SelectField,
+    PasswordField
 )
 from wtforms.validators import (
-    Length
+    Length,
+    DataRequired
 )
 
 from app.models import Roles, User, Group
@@ -65,3 +67,29 @@ class UpdateTickets(FlaskForm):
         get_label="username"
     )
     submit = SubmitField("Update")
+
+
+class LoginForm(FlaskForm):
+    username = StringField(
+        'Username',
+        id='username_login',
+        validators=[DataRequired()])
+    password = PasswordField(
+        'Password',
+        id='pwd_login',
+        validators=[DataRequired()]
+    )
+
+
+class CreateAccountForm(FlaskForm):
+    username = StringField(
+        'Username',
+        id='username_create',
+        validators=[DataRequired()]
+    )
+
+    password = PasswordField(
+        'Password',
+        id='pwd_create',
+        validators=[DataRequired()]
+    )
