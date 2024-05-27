@@ -32,7 +32,11 @@ class Status(enum.Enum):
 group_tickets = db.Table(
     "group_tickets",
     db.Column("group_id", Integer, ForeignKey("group.id", ondelete="CASCADE")),
-    db.Column("ticket_id", Integer, ForeignKey("ticket.id", ondelete="CASCADE"))
+    db.Column(
+        "ticket_id",
+        Integer,
+        ForeignKey("ticket.id", ondelete="CASCADE")
+    )
 )
 
 user_groups = db.Table(
@@ -62,9 +66,6 @@ class User(db.Model):
     password = Column(String(100), nullable=False)
     role = Column(Enum(Roles), default=Roles.any)
 
-    def has_role(self, role: str) -> bool:
-        return self.role == role
-
     def set_password(self, password: str) -> None:
         self.password = generate_password_hash(password)
 
@@ -75,7 +76,16 @@ class User(db.Model):
 class Ticket(db.Model):
     id = Column(Integer, primary_key=True, index=True)
     status = Column(Enum(Status))
-    note = Column(Text, nullable=True)
+    status = Column(Text, nullable=True)
 
-    assigned_groups = relationship("Group", secondary="group_tickets", backref="tickets", lazy=True)
-    assigned_users = relationship("User", backref="ticket", lazy=True)
+    assigned_groups = relationship(
+        "Group",
+        secondary="group_tickets",
+        backref="tickets",
+        lazy=True
+    )
+    assigned_users = relationship(
+        "User",
+        backref="ticket",
+        lazy=True
+    )
