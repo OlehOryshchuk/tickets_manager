@@ -11,7 +11,6 @@ from sqlalchemy import (
 from sqlalchemy.orm import (
     relationship
 )
-from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import db
 
@@ -65,12 +64,6 @@ class User(db.Model):
     username = Column(String(250), nullable=False, unique=True)
     password = Column(String(100), nullable=False)
     role = Column(Enum(Roles), default=Roles.any)
-
-    def set_password(self, password: str) -> None:
-        self.password = generate_password_hash(password)
-
-    def check_password(self, password: str) -> bool:
-        return check_password_hash(self.password, password)
 
 
 class Ticket(db.Model):
