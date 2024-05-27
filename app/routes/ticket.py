@@ -4,6 +4,7 @@ from flask import (
     flash,
     redirect,
     url_for,
+    current_app
 )
 
 from flask_login import (
@@ -28,9 +29,13 @@ def list_ticket():
     user_groups = current_user.groups
 
     # Collect all tickets associated with these groups
-    tickets = Ticket.query.join(Ticket.assigned_groups).filter(
+    ticket_query = Ticket.query.join(Ticket.assigned_groups).filter(
         Group.id.in_([group.id for group in user_groups])
-    ).all()
+    )
+
+    tickets = ticket_query.paginate(
+        max_per_page=current_app.config.get("PAGINATION_MAX_PER_PAGE")
+    )
 
     return render_template("tickets/ticket_list.html", tickets=tickets)
 

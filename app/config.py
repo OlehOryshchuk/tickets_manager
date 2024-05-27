@@ -10,3 +10,4 @@ class Config:
 
     # database configurations
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URI")
+    PAGINATION_MAX_PER_PAGE = 10

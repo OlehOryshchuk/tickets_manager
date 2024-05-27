@@ -3,7 +3,8 @@ from flask import (
     render_template,
     flash,
     redirect,
-    url_for
+    url_for,
+    current_app
 )
 
 from flask_login import (
@@ -44,7 +45,9 @@ def update_me():
 @user_bl.get("/users/")
 @login_required
 def list_user():
-    users = User.query.all()
+    users = User.query.paginate(
+        max_per_page=current_app.config.get("PAGINATION_MAX_PER_PAGE")
+    )
     return render_template("users/user_list.html", users=users)
 
 

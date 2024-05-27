@@ -3,7 +3,8 @@ from flask import (
     render_template,
     flash,
     redirect,
-    url_for
+    url_for,
+    current_app
 )
 
 from flask_login import (
@@ -62,7 +63,9 @@ def delete_user(user_id: int):
 @login_required
 @role_required([Roles.admin.value])
 def list_group():
-    groups = Group.query.all()
+    groups = Group.query.paginate(
+        max_per_page=current_app.config.get("PAGINATION_MAX_PER_PAGE")
+    )
     return render_template("groups/group_list.html", groups=groups)
 
 
@@ -113,5 +116,7 @@ def delete_group(group_id: int):
 @login_required
 @role_required([Roles.admin.value])
 def list_ticket():
-    tickets = Ticket.query.all()
+    tickets = Ticket.query.paginate(
+        max_per_page=current_app.config.get("PAGINATION_MAX_PER_PAGE")
+    )
     return render_template("tickets/ticket_list.html", tickets=tickets)
