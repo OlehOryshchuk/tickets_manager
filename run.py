@@ -1,9 +1,9 @@
 import dotenv
 import os
-from flask_migrate import Migrate
 
-from app import init_app, db
-from app.config import config_dict
+from apps import init_app
+from apps.config import config_dict
+from create_admin_user import create_admin
 
 dotenv.load_dotenv()
 
@@ -13,9 +13,11 @@ DEBUG = (os.getenv("DEBUG", "False") == "True")
 # The configuration
 config_mode = "debug" if DEBUG else "production"
 
-# create app and all of it dependencies
+# create apps and all of it dependencies
 app = init_app(config_dict[config_mode])
-Migrate(app, db)
+
+# create default admin user
+create_admin(app)
 
 if __name__ == "__main__":
     app.run()
