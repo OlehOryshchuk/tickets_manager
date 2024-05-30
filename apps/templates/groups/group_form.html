@@ -1,0 +1,35 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+    {% if group %}Update{% else %}Create{% endif %} Group
+{% endblock %}
+
+{% block content %}
+<div class="container  mt-8">
+    <h1>{% if group %}Update{% else %}Create{% endif %} Group</h1>
+    <div class="card-body">
+
+        <form role="form" method="post" action="">
+            {{ form.csrf_token }}
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                <label class="small mb-1" for="name">Name</label>
+                {{ form.name(placeholder="Group name", class="form-control") }}
+            </div>
+            <div class="form-group">
+                <label class="small mb-1" for="description">Description</label>
+                {{ form.description(placeholder="Group description", class="form-control") }}
+            </div>
+            <div class="form-group">
+                <label class="small mb-1" for="users">Assigned Users</label>
+                {{ form.users(class="form-select", multiple="multiple") }}
+            </div>
+            <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+                {{ form.submit(class_='btn btn-primary') }}
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

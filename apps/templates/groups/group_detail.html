@@ -1,0 +1,22 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+  Group
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-8">
+    <h1>
+      <strong>Group</strong>: {{ group.name }}
+      <a href="{{ url_for('group.update_group', group_id=group.id) }}" class="btn btn-primary"> Update</a>
+      <a href="{{ url_for('group.delete_group', group_id=group.id) }}" class="btn btn-danger"> Delete</a>
+    </h1>
+
+    <p><strong>Description: </strong>{{ group.description }}</p>
+    <p><strong>Groups: </strong></p>
+    {% for user in group.users %}
+      <p><a href="{{ url_for('user.list_user', group_id=group.id) }}"> {{ user.username }}</a></p>
+    {% endfor %}
+    <hr>
+  </div>
+{% endblock %}

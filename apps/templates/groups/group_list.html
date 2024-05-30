@@ -1,0 +1,72 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Groups {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+  <main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Groups</h1>
+
+        <div class="card mb-4">
+            <div class="card-header">
+              <i class="fas fa-table me-1"></i>
+              Group table
+              {% if current_user.role.value == 'Admin' %}
+                <span><a href="{{ url_for('group.create_group') }}">Create</a></span>
+              {% endif %}
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                  <thead>
+                      <tr>
+                          <th>ID</th>
+                          <th>Name</th>
+                      </tr>
+                  </thead>
+                  <tfoot>
+                      <tr>
+                          <th>ID</th>
+                          <th>Name</th>
+                      </tr>
+                  </tfoot>
+                  <tbody>
+                    {% for group in groups %}
+                      <tr>
+                        <td>
+                          <a
+                            href="{{ url_for('group.detail_group', group_id=group.id) }}">{{ group.id }}
+                          </a>
+                        </td>
+                        <td>{{ group.name }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+            </div>
+        </div>
+      {% include 'includes/pagination.html' %}
+    </div>
+  </main>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', event => {
+            const datatablesSimple = document.getElementById('datatablesSimple');
+            if (datatablesSimple) {
+                new simpleDatatables.DataTable(datatablesSimple, {
+                    paging: false, // Disable pagination
+                    searchable: false, // Disable search
+                });
+            }
+        });
+    </script>
+
+{% endblock javascripts %}
