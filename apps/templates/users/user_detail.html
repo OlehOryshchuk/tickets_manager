@@ -1,0 +1,24 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+  User
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-8">
+    <h1>
+      Username: {{ user.username }}
+      {% if user == current_user %}
+        <a href="{{ url_for('user.update_me') }}" class="btn btn-primary"> Update</a>
+      {% endif %}
+
+      {% if user.role.value == 'Admin' %}
+        <a href="{{ url_for('user.delete_user', user_id=user.id) }}" class="btn btn-danger"> Delete</a>
+      {% endif %}
+
+    </h1>
+
+    <p><strong>Role: </strong>{{ user.role.value }}</p>
+    <hr>
+  </div>
+{% endblock %}
