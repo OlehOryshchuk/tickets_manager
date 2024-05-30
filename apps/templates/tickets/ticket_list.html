@@ -1,0 +1,72 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Tickets {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+  <main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Tickets</h1>
+
+        <div class="card mb-4">
+            <div class="card-header">
+              <i class="fas fa-table me-1"></i>
+              Ticket table
+              {% if current_user.role.value == 'Admin' %}
+                <span><a href="{{ url_for('ticket.create_ticket') }}">Create</a></span>
+              {% endif %}
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                  <thead>
+                      <tr>
+                          <th>ID</th>
+                          <th>Status</th>
+                      </tr>
+                  </thead>
+                  <tfoot>
+                      <tr>
+                          <th>ID</th>
+                          <th>Status</th>
+                      </tr>
+                  </tfoot>
+                  <tbody>
+                    {% for ticket in tickets %}
+                      <tr>
+                        <td>
+                          <a
+                            href="{{ url_for('ticket.detail_ticket', ticket_id=ticket.id) }}">{{ ticket.id }}
+                          </a>
+                        </td>
+                        <td>{{ ticket.status }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+            </div>
+        </div>
+      {% include 'includes/pagination.html' %}
+    </div>
+  </main>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', event => {
+            const datatablesSimple = document.getElementById('datatablesSimple');
+            if (datatablesSimple) {
+                new simpleDatatables.DataTable(datatablesSimple, {
+                    paging: false, // Disable pagination
+                    searchable: false, // Disable search
+                });
+            }
+        });
+    </script>
+
+{% endblock javascripts %}

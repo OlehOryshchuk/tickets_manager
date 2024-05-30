@@ -1,0 +1,40 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+    {% if ticket %}Update{% else %}Create{% endif %} Ticket
+{% endblock %}
+
+{% block content %}
+<div class="container  mt-8">
+    <h1>{% if ticket %}Update{% else %}Create{% endif %} Ticket</h1>
+
+    <div class="card-body">
+
+        <form role="form" method="post" action="">
+            {{ form.csrf_token }}
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                <label class="small mb-1" for="status">Status</label>
+                {{ form.status(class="form-select") }}
+            </div>
+            <div class="form-group">
+                <label class="small mb-1" for="note">Note</label>
+                {{ form.note(placeholder="Ticket note", class="form-control") }}
+            </div>
+            <div class="form-group">
+                <label class="small mb-1" for="assigned_groups">Assigned to Groups</label>
+                {{ form.assigned_groups(class="form-select", multiple="multiple") }}
+            </div>
+            <div class="form-group">
+                <label class="small mb-1" for="assigned_user">Assigned to User</label>
+                {{ form.assigned_user(class="form-select") }}
+            </div>
+            <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+                {{ form.submit(class_='btn btn-primary') }}
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
