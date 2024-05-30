@@ -10,6 +10,8 @@ A Web Application in Flask that implements a simple ticket system with different
     https://github.com/OlehOryshchuk/tickets_manager
 ```
 2. Copy the `.env.sample` file to `.env` and configure the environment variables
+    That how i would normally do but since this is task project i left  `.env` file 
+   not hided
 ```
     cp .env.sample .env
 ```
